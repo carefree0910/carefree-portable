@@ -4,6 +4,7 @@ import subprocess
 import urllib.request
 
 from enum import Enum
+from typing import Callable
 from typing import Optional
 from pathlib import Path
 from zipfile import ZipFile
@@ -79,3 +80,12 @@ def git_clone(url: str, dst: Path) -> Path:
     if subprocess.run(["git", "clone", url, str(dst)]).returncode != 0:
         raise RuntimeError(f"failed to clone '{url}'")
     return dst
+
+
+def hijack_file(path: Path, callback: Callable[[str], str]) -> None:
+    with path.open("r") as f:
+        lines = f.readlines()
+    for i, line in enumerate(lines):
+        lines[i] = callback(line)
+    with path.open("w") as f:
+        f.writelines(lines)

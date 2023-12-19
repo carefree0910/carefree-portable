@@ -1,21 +1,12 @@
 import subprocess
 
 from cfport import *
-from typing import Callable
 from pathlib import Path
+from cfport.toolkit import hijack_file
 
 
 workspace = "sd_webui_cfport"
 webui_block_name = "webui"
-
-
-def hijack_file(path: Path, callback: Callable[[str], str]) -> None:
-    with path.open("r") as f:
-        lines = f.readlines()
-    for i, line in enumerate(lines):
-        lines[i] = callback(line)
-    with path.open("w") as f:
-        f.writelines(lines)
 
 
 @IExecuteBlock.register(webui_block_name)
