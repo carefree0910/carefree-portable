@@ -1,4 +1,5 @@
 import sys
+import shutil
 import urllib.request
 
 from enum import Enum
@@ -57,3 +58,10 @@ def download(
     if remove_zip:
         path.unlink()
     return zip_folder_path
+
+
+def cp(src: Path, dst: Path) -> None:
+    if src.is_file():
+        shutil.copyfile(src, dst)
+    else:
+        shutil.copytree(src, dst)
