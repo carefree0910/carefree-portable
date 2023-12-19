@@ -13,7 +13,7 @@ from ...console import rule
 def hijack_cmds(cmds: List[str], prepare_python: PreparePythonBlock) -> List[str]:
     for i, cmd in enumerate(cmds):
         if cmd == "$pip":
-            cmds[i] = prepare_python.pip_cmd
+            cmds[i] = prepare_python.pip_cmd  # type: ignore
         elif cmd == "$python":
             cmds[i] = str(prepare_python.executable)
     merged = []

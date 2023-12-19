@@ -47,6 +47,14 @@ class PyRequirement:
     __repr__ = __str__
 
 
+def get_py_requirement(req: Union[str, Dict[str, Any], PyRequirement]) -> PyRequirement:
+    if isinstance(req, str):
+        return PyRequirement(package_name=req)
+    if isinstance(req, dict):
+        return PyRequirement(**req)
+    return req
+
+
 @dataclass
 class Asset:
     name: Optional[str] = None
@@ -96,7 +104,7 @@ class IConfig(ISerializableDataClass):
     workspace: str = DEFAULT_WORKSPACE
     allow_existing: bool = True
     assets: Optional[List[TAsset]] = None
-    downloads: Dict[str, Union[str, Dict[str, str]]] = field(default_factory=dict)
+    downloads: Dict[str, Union[str, List[str]]] = field(default_factory=dict)
     python_requirements: List[Union[str, PyRequirement]] = field(default_factory=list)
     python_launch_cli: Optional[str] = None
     python_launch_script: Optional[TAsset] = None
@@ -117,12 +125,9 @@ class IConfig(ISerializableDataClass):
         super().from_info(info)
         if self.assets is not None:
             self.assets = list(map(get_asset, self.assets))
-        self.python_requirements = [
-            requirement
-            if isinstance(requirement, str)
-            else PyRequirement(**requirement)
-            for requirement in self.python_requirements
-        ]
+        self.python_requirements = list(
+            map(get_py_requirement, self.python_requirements)
+        )
         if self.python_launch_script is not None:
             self.python_launch_script = get_asset(self.python_launch_script)
 

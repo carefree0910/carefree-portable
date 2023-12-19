@@ -34,7 +34,7 @@ class PrepareBlock(IExecuteBlock):
                 default="y",
             )
             if not overwrite:
-                workspace = ask("please input a new workspace")
+                workspace = Path(ask("please input a new workspace"))
             else:
                 log(f"removing '{workspace}'")
                 shutil.rmtree(workspace)
@@ -44,8 +44,8 @@ class PrepareBlock(IExecuteBlock):
 
 @IExecuteBlock.register("prepare_python")
 class PreparePythonBlock(IExecuteBlock):
-    root: Optional[Path] = None
-    executable: Optional[Path] = None
+    root: Path
+    executable: Path
 
     @property
     def download_block(self) -> Optional[DownloadBlock]:

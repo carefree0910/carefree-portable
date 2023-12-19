@@ -12,7 +12,7 @@ from ...constants import SETTINGS_DIR
 
 @IExecuteBlock.register("download")
 class DownloadBlock(IExecuteBlock):
-    downloaded: Optional[Dict[str, Dict[str, Path]]] = None
+    downloaded: Dict[str, Dict[str, Path]]
 
     def build(self, config: IConfig) -> None:
         platform = config.platform
