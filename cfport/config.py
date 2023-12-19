@@ -61,10 +61,12 @@ class Asset:
     url: Optional[str] = None
     path: Optional[str] = None
     git_url: Optional[str] = None
+    ignores: Optional[List[str]] = None
     flatten: bool = False
     dst: Optional[str] = None
 
     def fetch(self, workspace: Path) -> None:
+        ignores = self.ignores
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_root = Path(tmp_dir)
             if self.path is not None:
@@ -74,6 +76,8 @@ class Asset:
             elif self.git_url is not None:
                 git_name = self.name or self.git_url.split("/")[-1]
                 src = git_clone(self.git_url, tmp_root / git_name)
+                if ignores is None:
+                    ignores = [".git"]
             else:
                 raise ValueError(f"invalid asset occurred: {self}")
             dst = workspace / Path(self.dst or src.name)
@@ -84,7 +88,11 @@ class Asset:
                 if not self.flatten:
                     cp(src, dst)
                 else:
+                    if ignores is None:
+                        ignores = []
                     for p in src.iterdir():
+                        if p.name in ignores:
+                            continue
                         cp(p, dst / p.name)
 
 
