@@ -83,7 +83,7 @@ This will generate a `cfport.json` with a pre-defined `requirement` in the `pyth
 
 ## Examples
 
-- [mixtral](https://github.com/carefree0910/carefree-portable/blob/main/examples/mixtral), which can generate a portable service for the famous [`Mixtral-8x7B` LLM](https://huggingface.co/docs/transformers/model_doc/mixtral).
+- [mixtral](https://github.com/carefree0910/carefree-portable/blob/main/examples/mixtral), which can generate a portable gradio demo for the famous [`Mixtral-8x7B` LLM](https://huggingface.co/docs/transformers/model_doc/mixtral).
 - [Stable Diffusion Web UI](https://github.com/carefree0910/carefree-portable/blob/main/examples/sd_webui), which can generate a portable version of the famous [A1111 webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
 
 
