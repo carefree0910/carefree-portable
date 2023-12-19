@@ -115,6 +115,7 @@ class IConfig(ISerializableDataClass):
     downloads: Dict[str, Union[str, List[str]]] = field(default_factory=dict)
     python_requirements: List[Union[str, PyRequirement]] = field(default_factory=list)
     python_launch_cli: Optional[str] = None
+    python_launch_entry: Optional[str] = None
     python_launch_script: Optional[TAsset] = None
     external_blocks: Optional[List[str]] = None
 
