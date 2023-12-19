@@ -1,5 +1,6 @@
 import sys
 import shutil
+import subprocess
 import urllib.request
 
 from enum import Enum
@@ -65,3 +66,10 @@ def cp(src: Path, dst: Path) -> None:
         shutil.copyfile(src, dst)
     else:
         shutil.copytree(src, dst)
+
+
+def git_clone(url: str, dst: Path) -> Path:
+    subprocess.run(["git", "lfs", "install"])
+    if subprocess.run(["git", "clone", url, str(dst)]).returncode != 0:
+        raise RuntimeError(f"failed to clone '{url}'")
+    return dst
