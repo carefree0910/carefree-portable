@@ -21,12 +21,11 @@ class SetPythonLaunchScriptBlock(IWithPreparePythonBlock):
         # windows launch
         if platform == Platform.WINDOWS:
             bat_path = workspace / "run.bat"
-            executable = str(self.prepare_python.executable)
-            executable = executable.replace(config.workspace, ".")
+            executable = str(self.prepare_python.executable.relative_to(workspace))
             if launch_cli is not None:
                 rule(f"Generating `.bat` file to run '{launch_cli}'")
                 cli = self.prepare_python.root / "Lib" / "site-packages" / launch_cli
-                cli = str(cli).replace(config.workspace, ".")
+                cli = str(cli.relative_to(workspace))
                 with bat_path.open("w") as f:
                     f.write(
                         f"""
