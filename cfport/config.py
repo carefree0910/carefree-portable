@@ -114,6 +114,7 @@ class IConfig(ISerializableDataClass):
     assets: Optional[List[TAsset]] = None
     downloads: Dict[str, Union[str, List[str]]] = field(default_factory=dict)
     python_requirements: List[Union[str, PyRequirement]] = field(default_factory=list)
+    huggingface_space_app_file: Optional[str] = None
     python_launch_cli: Optional[str] = None
     python_launch_entry: Optional[str] = None
     python_launch_script: Optional[TAsset] = None

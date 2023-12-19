@@ -31,6 +31,7 @@ class Executer(IPipeline):
             DownloadBlock(),
             PreparePythonBlock(),
             InstallPythonRequirementsBlock(),
+            HijackHFSpaceAppBlock(),
             SetPythonLaunchScriptBlock(),
         ]
         if self.config.external_blocks is not None:
