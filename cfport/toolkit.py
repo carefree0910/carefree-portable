@@ -72,6 +72,9 @@ def cp(src: Path, dst: Path) -> None:
 
 
 def git_clone(url: str, dst: Path) -> Path:
+    if dst.is_dir():
+        log(f"'{dst}' already exists, skipping")
+        return dst
     subprocess.run(["git", "lfs", "install"])
     if subprocess.run(["git", "clone", url, str(dst)]).returncode != 0:
         raise RuntimeError(f"failed to clone '{url}'")
