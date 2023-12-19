@@ -20,10 +20,11 @@ class SetPythonLaunchScriptBlock(IWithPreparePythonBlock):
             return
         # windows launch
         if platform == Platform.WINDOWS:
-            bat_path = workspace / "run.bat"
+            bat_file = "run.bat"
+            bat_path = workspace / bat_file
             executable = str(self.prepare_python.executable.relative_to(workspace))
             if launch_cli is not None:
-                rule(f"Generating `.bat` file to run '{launch_cli}' in site-packages")
+                rule(f"Generating '{bat_file}' to run '{launch_cli}' in site-packages")
                 cli = self.prepare_python.root / "Lib" / "site-packages" / launch_cli
                 cli = str(cli.relative_to(workspace))  # type: ignore
                 with bat_path.open("w") as f:
@@ -35,7 +36,7 @@ title Run
 """
                     )
             elif launch_entry is not None:
-                rule(f"Generating `.bat` file to run '{launch_entry}'")
+                rule(f"Generating '{bat_file}' to run '{launch_entry}'")
                 with bat_path.open("w") as f:
                     f.write(
                         f"""
@@ -48,7 +49,7 @@ title Run
                 launch_script = get_asset(launch_script)
                 launch_script.fetch(workspace)
                 launch_script_dst = launch_script.dst
-                rule(f"Generating `.bat` file to run '{launch_script_dst}'")
+                rule(f"Generating '{bat_file}' to run '{launch_script_dst}'")
                 with bat_path.open("w") as f:
                     f.write(
                         f"""
