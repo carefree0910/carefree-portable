@@ -11,7 +11,7 @@ class Executer(IPipeline):
     config: IConfig
 
     @classmethod
-    def init(cls: type["Executer"], config: IConfig) -> "Executer":
+    def init(cls: Type["Executer"], config: IConfig) -> "Executer":
         self = cls()
         self.config = config
         return self
