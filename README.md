@@ -34,14 +34,6 @@ cd carefree-portable
 pip install -e .
 ```
 
-### Portable `carefree-portable`
-
-If you are Windows user, you may also download the `carefree-portable.zip` from the assets of the [Releases](https://github.com/carefree0910/carefree-portable/releases). This zip file contains a portable version of `carefree-portable` that can be used directly without any extra requirements - you can even run it without Python installed!
-
-If you are using this portable version, just make sure to:
-- `cd` into the unzipped `carefree-portable` folder.
-- Replace `cfport` with `.\run.bat` in the following commands.
-
 
 ## Usages
 
@@ -93,6 +85,30 @@ This will generate a `cfport.json` with a pre-defined `requirement` in the `pyth
 
 - [mixtral](https://github.com/carefree0910/carefree-portable/blob/main/examples/mixtral), which can generate a portable service for the famous [`Mixtral-8x7B` LLM](https://huggingface.co/docs/transformers/model_doc/mixtral).
 - [Stable Diffusion Web UI](https://github.com/carefree0910/carefree-portable/blob/main/examples/sd_webui), which can generate a portable version of the famous [A1111 webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
+
+
+## Portable `carefree-portable`
+
+If you are Windows user, you may also download the `carefree-portable.zip` from the assets of the latest [Releases](https://github.com/carefree0910/carefree-portable/releases). This zip file contains a portable version of `carefree-portable` that can be used directly without any extra requirements - you can even run it without Python installed!
+
+If you are using this portable version, just make sure to:
+- `cd` into the unzipped `carefree-portable` folder.
+- Replace `cfport` with `.\run.bat` in the following commands.
+- Replace `python` with `<path\to\portable\python>` in other python commands.
+  - The portable `python` locates at `.\carefree-portable\python_embeddables\python-3.10.11-embed-amd64\python`.
+
+Here's a step by step guide on how to use the portable `carefree-portable` to run the [Stable Diffusion Web UI](https://github.com/carefree0910/carefree-portable/blob/main/examples/sd_webui) example:
+
+1. Download the `carefree-portable.zip` from the assets of the latest [Releases](https://github.com/carefree0910/carefree-portable/releases).
+2. Unzip the `carefree-portable.zip` to a folder (let's say, `./carefree-portable`), and `cd` into it.
+3. Download the `run.py` from [here](https://github.com/carefree0910/carefree-portable/blob/main/examples/sd_webui/run.py), and put it into the unzipped folder (`./carefree-portable`).
+4. Run the following command, and wait until the webui pops up:
+
+```bash
+.\python_embeddables\python-3.10.11-embed-amd64\python run.py
+```
+
+5. After these steps, you'll obtain a portable version of the SD webui (locates at `./carefree-portable/sd_webui_cfport`), which can be used directly without any extra requirements!
 
 
 ## Contributing
