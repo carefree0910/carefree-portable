@@ -2,7 +2,7 @@
 
 `carefree-portable` aims to help you create portable (Python 🐍) projects of your codes / repo!
 
-> Currently we only support packaging Python projects on Windows because Python only provides embeddable Python for Windows officially. But as far as I know there exists some embeddable Python for Linux / MacOS as well, so I'll look into them in the future.
+> 🚨**WARNING**: Currently we only support packaging Python projects on Windows because Python only provides embeddable Python for Windows officially. But if there also exists some embeddable Python for Linux / MacOS, supporting them should be fairly straightforward.
 
 > Maybe other programming languages will also be supported in the future, after Python is fully supported.
 
