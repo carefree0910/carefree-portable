@@ -1,9 +1,8 @@
-import shutil
-
 from pathlib import Path
 
 from .prepare import IWithPreparePythonBlock
 from ..schema import IExecuteBlock
+from ...config import get_asset
 from ...config import IConfig
 from ...console import rule
 from ...toolkit import Platform
@@ -35,15 +34,16 @@ title Run
 """
                     )
             elif launch_script is not None:
-                rule(f"Generating `.bat` file to run '{launch_script}'")
-                script_file = "run.py"
-                shutil.copyfile(launch_script, workspace / script_file)
+                launch_script = get_asset(launch_script)
+                launch_script.fetch(workspace)
+                launch_script_dst = launch_script.dst
+                rule(f"Generating `.bat` file to run '{launch_script_dst}'")
                 with bat_path.open("w") as f:
                     f.write(
                         f"""
 @echo off
 title Run
-{executable} {script_file}
+{executable} {launch_script_dst}
 """
                     )
 

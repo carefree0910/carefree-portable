@@ -1,4 +1,6 @@
 import json
+import shutil
+import tempfile
 
 from typing import Any
 from typing import Dict
@@ -6,11 +8,15 @@ from typing import List
 from typing import Type
 from typing import Union
 from typing import Optional
+from pathlib import Path
 from dataclasses import field
 from dataclasses import dataclass
 from cftool.misc import update_dict
 from cftool.misc import ISerializableDataClass
 
+from .toolkit import cp
+from .toolkit import download
+from .toolkit import git_clone
 from .toolkit import Platform
 from .constants import DEFAULT_WORKSPACE
 from .constants import PRESETS_SETTINGS_DIR
@@ -42,14 +48,58 @@ class PyRequirement:
 
 
 @dataclass
+class Asset:
+    name: Optional[str] = None
+    url: Optional[str] = None
+    path: Optional[str] = None
+    git_url: Optional[str] = None
+    flatten: bool = False
+    dst: Optional[str] = None
+
+    def fetch(self, workspace: Path) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_root = Path(tmp_dir)
+            if self.path is not None:
+                src = Path(self.path)
+            elif self.url is not None:
+                src = download(self.url, root=tmp_root, name=self.name)
+            elif self.git_url is not None:
+                git_name = self.name or self.git_url.split("/")[-1]
+                src = git_clone(self.git_url, tmp_root / git_name)
+            else:
+                raise ValueError(f"invalid asset occurred: {self}")
+            dst = workspace / Path(self.dst or src.name)
+            self.dst = str(dst.relative_to(workspace))
+            if src.is_file():
+                cp(src, dst)
+            else:
+                if not self.flatten:
+                    cp(src, dst)
+                else:
+                    for p in src.iterdir():
+                        cp(p, dst / p.name)
+
+
+TAsset = Union[str, Dict[str, Any], Asset]
+
+
+def get_asset(asset: TAsset) -> Asset:
+    if isinstance(asset, str):
+        return Asset(path=asset)
+    if isinstance(asset, dict):
+        return Asset(**asset)
+    return asset
+
+
+@dataclass
 class IConfig(ISerializableDataClass):
     workspace: str = DEFAULT_WORKSPACE
     allow_existing: bool = True
-    assets: Optional[Dict[str, str]] = None
+    assets: Optional[List[TAsset]] = None
     downloads: Dict[str, Union[str, Dict[str, str]]] = field(default_factory=dict)
     python_requirements: List[Union[str, PyRequirement]] = field(default_factory=list)
     python_launch_cli: Optional[str] = None
-    python_launch_script: Optional[str] = None
+    python_launch_script: Optional[TAsset] = None
     external_blocks: Optional[List[str]] = None
 
     @classmethod
@@ -65,12 +115,16 @@ class IConfig(ISerializableDataClass):
 
     def from_info(self, info: Dict[str, Any]) -> None:
         super().from_info(info)
+        if self.assets is not None:
+            self.assets = list(map(get_asset, self.assets))
         self.python_requirements = [
             requirement
             if isinstance(requirement, str)
             else PyRequirement(**requirement)
             for requirement in self.python_requirements
         ]
+        if self.python_launch_script is not None:
+            self.python_launch_script = get_asset(self.python_launch_script)
 
     def dump(self, path: str) -> None:
         with open(path, "w") as f:

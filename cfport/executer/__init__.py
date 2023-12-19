@@ -27,7 +27,7 @@ class Executer(IPipeline):
     def launch(self) -> None:
         default_blocks = [
             PrepareBlock(),
-            CopyAssetsBlock(),
+            FetchAssetsBlock(),
             DownloadBlock(),
             PreparePythonBlock(),
             InstallPythonRequirementsBlock(),
