@@ -1,0 +1,14 @@
+{
+  "python_requirements": [
+    "rich",
+    {
+      "package_name": "click"
+    },
+    {
+      "install_command": "$pip install carefree-toolkit"
+    },
+    {
+      "git_url": "https://github.com/carefree0910/carefree-portable"
+    }
+  ]
+}

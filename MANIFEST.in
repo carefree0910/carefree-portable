@@ -1,0 +1,2 @@
+include cfport/settings/*.json
+include cfport/settings/*/*.json
