@@ -4,6 +4,7 @@ import subprocess
 import urllib.request
 
 from enum import Enum
+from typing import Optional
 from pathlib import Path
 from zipfile import ZipFile
 from cftool.misc import DownloadProgressBar
@@ -32,11 +33,13 @@ def get_platform() -> Platform:
 def download(
     url: str,
     root: Path = Path.cwd(),
+    name: Optional[str] = None,
     *,
     remove_zip: bool = True,
 ) -> Path:
     file = Path(url.split("/")[-1])
-    name = file.stem
+    if name is None:
+        name = file.stem
     path = root / file
     is_zip = file.suffix == ".zip"
     zip_folder_path = root / name
