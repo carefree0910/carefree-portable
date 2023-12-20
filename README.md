@@ -2,9 +2,13 @@
 
 `carefree-portable` 📦️ aims to help you create portable (Python 🐍) projects of your codes / repo!
 
-> 🚨**WARNING**: Currently we only support packaging Python projects on Windows because Python only provides embeddable Python for Windows officially. But if there also exists some embeddable Python for Linux / MacOS, supporting them should be fairly straightforward.
-
-> Maybe other programming languages will also be supported in the future, after Python is fully supported.
+> 🚨**WARNING**: Currently we only support packaging **Python** projects on **Windows** because Python only provides embeddable Python for Windows officially. But if there also exists some embeddable Python for Linux / MacOS, supporting them should be fairly straightforward.
+> 
+> 💡We are planning to:
+> - use `venv` as a fallback solution for Linux / MacOS.
+> - support other programming languages in the future, after Python is fully supported.
+> 
+> See [Roadmap](https://carefree0910.me/carefree-portable-doc/docs/about/roadmap) for more details.
 
 
 ## Highlights
@@ -12,10 +16,10 @@
 - **Portable**: The generated portable project can be used directly without any extra requirements.
   - For example, you can run a portable Python project even without Python installed!
 - **Extensible**: You can easily extend the functionality of `carefree-portable` 📦️ by editing existing configurations, or adding brand new `block` / `preset` without much effort.
-  - See the [Stable Diffusion Web UI](https://github.com/carefree0910/carefree-portable/blob/main/examples/sd_webui) example on how we hijack the famous SD webui repo with a custom `block` and make it portable out-of-the-box!
+  - See the [Stable Diffusion Web UI](https://github.com/carefree0910/carefree-portable/blob/main/examples/sd_webui) example on how we hijack the famous SD webui repo with a custom `block` and make it portable out-of-the-box.
 - **Integrable**: You can integrate `carefree-portable` 📦️ with (GitHub) CI to automatically generate a portable version of your project.
   - Basically, you only need to create a `cfport.json` file in the root directory of your project, and then run `cfport package` in your CI workflow (see [Usages](#usages) for more details).
-  - [Here](https://github.com/carefree0910/carefree-portable/blob/main/.github/workflows/package.yml)'s an example of how `carefree-portable` 📦️ packages itself into a portable version in the GitHub CI workflow!
+  - [Here](https://github.com/carefree0910/carefree-portable/blob/main/.github/workflows/package.yml)'s an example of how `carefree-portable` 📦️ packages itself into a portable version in the GitHub CI workflow.
 
 
 ## Installation
@@ -37,7 +41,7 @@ pip install -e .
 
 ## Usages
 
-> Detailed usages can be found in the [Wiki](https://github.com/carefree0910/carefree-portable/wiki) page.
+> Detailed usages can be found in the [CLI](https://carefree0910.me/carefree-portable-doc/docs/user-guides/cli) documentation.
 
 Go to the root directory of your project first:
 
@@ -55,7 +59,6 @@ cfport config
 
 This command will genearte a `cfport.json` file in the current directory. To make it work properly, you may need to edit the `python_requirements` field, which is a list of Python packages that your project depends on.
 
-> - You may notice that the default `install_command` starts with `$pip` instead of `pip`. This is important because it can tell `carefree-portable` 📦️ to use the correct `pip` executable when packaging your project.
 > - Don't forget to add your own project to this field as well!
 
 ### Packaging
@@ -78,7 +81,7 @@ cfport config --preset torch-2.1.0-cpu
 
 This will generate a `cfport.json` with a pre-defined `requirement` in the `python_requirements` field.
 
-> Again, you may notice that the pre-defined `requirement` starts with `$pip` instead of `pip`. This is important because it can tell `carefree-portable` 📦️ to use the correct `pip` executable when packaging your project.
+> You may notice that the pre-defined `requirement` starts with `$pip` instead of `pip`. This is important because it can tell `carefree-portable` 📦️ to use the correct `pip` executable when packaging your project.
 
 
 ## Examples
@@ -116,8 +119,6 @@ Here's a step by step guide on how to use the portable `carefree-portable` 📦�
 ## Contributing
 
 Contributions are truly welcomed!
-
-Since this project is mainly a JSON-based project, so in most cases contributions could be made by simply adding / editing various JSON files. It'll also be great if you can provide some examples for the new features you added.
 
 See [CONTRIBUTING.md](https://github.com/carefree0910/carefree-portable/blob/main/CONTRIBUTING.md) for more details.
 
