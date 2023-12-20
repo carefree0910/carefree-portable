@@ -57,25 +57,23 @@ class PreparePythonBlock(IExecuteBlock):
 
     def build(self, config: IConfig) -> None:
         key = "python_embeddables"
-        # currently only support windows, but you may add support for other platforms
-        # by conditioning on this `platform` variable
         platform = config.platform
         workspace = Path(config.workspace)
-        download_block = self.download_block
-        if download_block is None:
-            return
-        python_downloads = download_block.downloaded.get(key)
-        if python_downloads is None:
-            return
-        if len(python_downloads) != 1:
-            raise ValueError(
-                "expected download 1 and only 1 python embeddable, "
-                f"but got {len(python_downloads)}"
-            )
-        self.root = list(python_downloads.values())[0]
-        self.executable = self.root / "python"
         # windows preparation
         if platform == Platform.WINDOWS:
+            download_block = self.download_block
+            if download_block is None:
+                return
+            python_downloads = download_block.downloaded.get(key)
+            if python_downloads is None:
+                return
+            if len(python_downloads) != 1:
+                raise ValueError(
+                    "expected download 1 and only 1 python embeddable, "
+                    f"but got {len(python_downloads)}"
+                )
+            self.root = list(python_downloads.values())[0]
+            self.executable = self.root / "python"
             rule("Preparing Python Embeddable for Windows")
             # modify `_pth` file
             for path in self.root.iterdir():
@@ -88,6 +86,11 @@ class PreparePythonBlock(IExecuteBlock):
                 lines[-1] = lines[-1][1:]  # remove comment of 'import site'
                 with path.open("w") as f:
                     f.writelines(lines)
+        else:
+            raise NotImplementedError(
+                "`PreparePythonBlock` is not yet implemented "
+                f"on the '{platform}' platform"
+            )
         # install `pip`
         if subprocess.call(self.pip_cmd, stdout=subprocess.DEVNULL) == 0:
             log("`pip` is already installed")
