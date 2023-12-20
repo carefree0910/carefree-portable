@@ -39,8 +39,6 @@ class WebUIBlock(IExecuteBlock):
         hijack_file(repo_dir / webui_user_bat, hijack_python_executable)
         # hijack venv command
         hijack_file(repo_dir / "webui.bat", hijack_venv_command)
-        # remove config file
-        Path(DEFAULT_CONFIG_FILE).unlink()
         # run installation / launch bat
         subprocess.call([webui_user_bat], cwd=repo_dir, shell=True)
 
@@ -52,4 +50,7 @@ if __name__ == "__main__":
     config.external_blocks = [webui_block_name]
     config.python_requirements = ["virtualenv"]
     config.dump(DEFAULT_CONFIG_FILE)
-    run_package(file=DEFAULT_CONFIG_FILE)
+    try:
+        run_package(file=DEFAULT_CONFIG_FILE)
+    finally:
+        Path(DEFAULT_CONFIG_FILE).unlink()
