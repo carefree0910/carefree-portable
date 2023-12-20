@@ -41,7 +41,7 @@ pip install -e .
 
 ## Usages
 
-> Detailed usages can be found in the [CLI](https://carefree0910.me/carefree-portable-doc/docs/user-guides/cli) documentation.
+> Detailed usages can be found in the [CLI](https://carefree0910.me/carefree-portable-doc/docs/user-guides/cli) & [Configurations](http://localhost:3000/carefree-portable-doc/docs/user-guides/configurations) documentation.
 
 Go to the root directory of your project first:
 
