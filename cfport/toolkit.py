@@ -4,6 +4,7 @@ import subprocess
 import urllib.request
 
 from enum import Enum
+from typing import List
 from typing import Callable
 from typing import Optional
 from pathlib import Path
@@ -89,3 +90,18 @@ def hijack_file(path: Path, callback: Callable[[str], str]) -> None:
         lines[i] = callback(line)
     with path.open("w") as f:
         f.writelines(lines)
+
+
+def hijack_cmds(cmds: List[str], pip_cmd: List[str], executable: str) -> List[str]:
+    for i, cmd in enumerate(cmds):
+        if cmd == "$pip":
+            cmds[i] = pip_cmd  # type: ignore
+        elif cmd == "$python":
+            cmds[i] = executable
+    merged = []
+    for cmd in cmds:
+        if isinstance(cmd, list):
+            merged.extend(cmd)
+        else:
+            merged.append(cmd)
+    return merged

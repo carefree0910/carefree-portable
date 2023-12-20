@@ -1,6 +1,6 @@
 import json
-import shutil
 import tempfile
+import subprocess
 
 from typing import Any
 from typing import Dict
@@ -14,9 +14,11 @@ from dataclasses import dataclass
 from cftool.misc import update_dict
 from cftool.misc import ISerializableDataClass
 
+from .console import rule
 from .toolkit import cp
 from .toolkit import download
 from .toolkit import git_clone
+from .toolkit import hijack_cmds
 from .toolkit import Platform
 from .constants import DEFAULT_WORKSPACE
 from .constants import PRESETS_SETTINGS_DIR
@@ -45,6 +47,28 @@ class PyRequirement:
         return super().__str__()
 
     __repr__ = __str__
+
+    def install_with(
+        self,
+        *,
+        pip_cmd: List[str],
+        executable: str,
+    ) -> None:
+        rule(f"Installing {self}")
+        if self.install_command is not None:
+            cmds = self.install_command.split()
+            cmds = hijack_cmds(cmds, pip_cmd, executable)
+            result = subprocess.run(cmds)
+        elif self.git_url is not None:
+            result = subprocess.run(pip_cmd + ["install", self.git_url])
+        elif self.package_name is not None:
+            result = subprocess.run(pip_cmd + ["install", self.package_name])
+        elif self.requirement_file is not None:
+            result = subprocess.run(pip_cmd + ["install", "-r", self.requirement_file])
+        else:
+            raise ValueError(f"invalid requirement occurred: {self}")
+        if result.returncode != 0:
+            raise RuntimeError(f"failed to install requirements: {self}")
 
 
 def get_py_requirement(req: Union[str, Dict[str, Any], PyRequirement]) -> PyRequirement:
