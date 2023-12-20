@@ -5,6 +5,7 @@ from pathlib import Path
 
 from ..schema import IExecuteBlock
 from ...config import IConfig
+from ...console import log
 from ...toolkit import download
 from ...constants import SETTINGS_DIR
 
@@ -32,7 +33,8 @@ class DownloadBlock(IExecuteBlock):
                 if isinstance(v_url, dict):
                     v_url = v_url.get(platform.value)
                 if v_url is None:
-                    raise ValueError(f"[{platform}] cannot find url for '{v}' in '{k}'")
+                    log(f"[{platform}] cannot find url for '{v}' in '{k}', skippping")
+                    continue
                 kv_downloaded = download(v_url, k_workspace)
                 k_downloaded[v] = kv_downloaded
 
