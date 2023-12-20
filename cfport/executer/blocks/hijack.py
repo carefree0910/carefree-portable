@@ -1,10 +1,8 @@
 from pathlib import Path
 
 from ..schema import IExecuteBlock
-from ...config import get_asset
 from ...config import IConfig
 from ...console import log
-from ...console import rule
 from ...toolkit import hijack_file
 
 

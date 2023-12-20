@@ -1,7 +1,6 @@
 import json
 
 from typing import Dict
-from typing import Optional
 from pathlib import Path
 
 from ..schema import IExecuteBlock

@@ -2,7 +2,6 @@ from pathlib import Path
 
 from .prepare import IWithPreparePythonBlock
 from ..schema import IExecuteBlock
-from ...config import get_asset
 from ...config import IConfig
 from ...console import rule
 from ...toolkit import Platform
