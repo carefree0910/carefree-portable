@@ -1,9 +1,22 @@
+from typing import List
 from typing import Type
 from cftool.pipeline import IPipeline
 
 from .schema import *
 from .blocks import *
 from ..config import IConfig
+
+
+def get_default_blocks() -> List[IExecuteBlock]:
+    return [
+        PrepareBlock(),
+        FetchAssetsBlock(),
+        DownloadBlock(),
+        PreparePythonBlock(),
+        InstallPythonRequirementsBlock(),
+        HijackHFSpaceAppBlock(),
+        SetPythonLaunchScriptBlock(),
+    ]
 
 
 @IPipeline.register("executer")
@@ -25,20 +38,12 @@ class Executer(IPipeline):
         return IExecuteBlock
 
     def launch(self) -> None:
-        default_blocks = [
-            PrepareBlock(),
-            FetchAssetsBlock(),
-            DownloadBlock(),
-            PreparePythonBlock(),
-            InstallPythonRequirementsBlock(),
-            HijackHFSpaceAppBlock(),
-            SetPythonLaunchScriptBlock(),
-        ]
+        blocks = get_default_blocks()
         if self.config.external_blocks is not None:
-            default_blocks.extend(
+            blocks.extend(
                 [
                     IExecuteBlock.make(external_block, {})
                     for external_block in self.config.external_blocks
                 ]
             )
-        return self.build(*default_blocks)
+        return self.build(*blocks)
