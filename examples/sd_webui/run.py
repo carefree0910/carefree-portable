@@ -2,6 +2,7 @@ import subprocess
 
 from cfport import *
 from pathlib import Path
+from cfport.toolkit import git_clone
 from cfport.toolkit import hijack_file
 
 
@@ -30,7 +31,7 @@ class WebUIBlock(IExecuteBlock):
         repo_url = "https://github.com/AUTOMATIC1111/stable-diffusion-webui"
         repo_dir = workspace / repo_url.split("/")[-1]
         if not repo_dir.is_dir():
-            subprocess.run(["git", "clone", repo_url, str(repo_dir)])
+            git_clone(repo_url, repo_dir)
         # hijack python executable
         executable = str(prepare_python.executable)
         executable = executable.replace(config.workspace, "..")
