@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from cftool.misc import update_dict
 from cftool.misc import ISerializableDataClass
 
+from .console import log
 from .console import rule
 from .toolkit import cp
 from .toolkit import download
@@ -266,6 +267,7 @@ class IConfig(ISerializableDataClass):
     python_launch_cli: Optional[str] = None
     python_launch_entry: Optional[str] = None
     external_blocks: Optional[List[str]] = None
+    version: Optional[str] = None
 
     @classmethod
     def d(cls) -> Dict[str, Type["IConfig"]]:
@@ -291,6 +293,8 @@ class IConfig(ISerializableDataClass):
             json.dump(self.to_pack().asdict(), f, indent=2)
 
     def load(self, preset: str) -> None:
+        import cfport
+
         with DEFAULT_SETTINGS_PATH.open("r") as f:
             defaults = json.load(f)
         if preset != "none":
@@ -299,6 +303,13 @@ class IConfig(ISerializableDataClass):
                 update_dict(json.load(f), defaults)
         for k, v in defaults.items():
             setattr(self, k, v)
+        if self.version is None:
+            self.version = cfport.__version__
+        elif self.version != cfport.__version__:
+            log(
+                f"version mismatch: config version is {self.version}, "
+                f"but `carefree-portable` 📦️ version is {cfport.__version__}"
+            )
 
 
 @IConfig.register(Platform.LINUX.value)
