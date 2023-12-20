@@ -296,12 +296,12 @@ class IConfig(ISerializableDataClass):
         import cfport
 
         with DEFAULT_SETTINGS_PATH.open("r") as f:
-            defaults = json.load(f)
+            settings = json.load(f)
         if preset != "none":
             preset_path = PRESETS_SETTINGS_DIR / f"{preset}.json"
             with preset_path.open("r") as f:
-                update_dict(json.load(f), defaults)
-        for k, v in defaults.items():
+                update_dict(json.load(f), settings)
+        for k, v in settings.items():
             setattr(self, k, v)
         if self.version is None:
             self.version = cfport.__version__
