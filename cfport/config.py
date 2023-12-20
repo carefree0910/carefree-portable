@@ -287,6 +287,7 @@ class IConfig(ISerializableDataClass):
         self.python_requirements = list(
             map(get_py_requirement, self.python_requirements)
         )
+        self._handle_version()
 
     def dump(self, path: str) -> None:
         with open(path, "w") as f:
