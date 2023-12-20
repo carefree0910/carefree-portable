@@ -26,7 +26,6 @@ class DownloadBlock(IExecuteBlock):
             with k_urls_path.open("r") as f:
                 k_urls = json.load(f)
             k_workspace = workspace / k
-            k_workspace.mkdir(exist_ok=True)
             k_downloaded = self.downloaded.setdefault(k, {})
             for v in vs:
                 v_url = k_urls.get(v)
@@ -35,6 +34,7 @@ class DownloadBlock(IExecuteBlock):
                 if v_url is None:
                     log(f"[{platform}] cannot find url for '{v}' in '{k}', skippping")
                     continue
+                k_workspace.mkdir(exist_ok=True)
                 kv_downloaded = download(v_url, k_workspace)
                 k_downloaded[v] = kv_downloaded
 
