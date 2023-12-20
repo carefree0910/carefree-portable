@@ -1,6 +1,6 @@
 # Mixtral
 
-This is an example of using `carefree-portable` to package the famous [`Mixtral-8x7B` LLM](https://huggingface.co/docs/transformers/model_doc/mixtral).
+This is an example of using `carefree-portable` 📦️ to package the famous [`Mixtral-8x7B` LLM](https://huggingface.co/docs/transformers/model_doc/mixtral).
 
 > Currently this example only works on Windows.
 

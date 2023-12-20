@@ -1,6 +1,6 @@
 # Stable Diffusion Web UI
 
-This is an example of using `carefree-portable` to package the famous [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) project.
+This is an example of using `carefree-portable` 📦️ to package the famous [Stable Diffusion Web UI](https://github.com/AUTOMATIC1111/stable-diffusion-webui) project.
 
 > Currently this example only works on Windows.
 
