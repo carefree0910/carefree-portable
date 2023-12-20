@@ -3,6 +3,9 @@
   "info": {
     "workspace": "mixtral_cfport",
     "allow_existing": true,
+    "assets": [
+      "run.py"
+    ],
     "downloads": {
       "python_embeddables": "3.10.11_64-bit"
     },
@@ -13,7 +16,7 @@
       "transformers==4.36.2",
       "gradio==4.10.0"
     ],
-    "python_launch_script": "run.py",
+    "python_launch_entry": "run.py",
     "external_blocks": null
   }
 }

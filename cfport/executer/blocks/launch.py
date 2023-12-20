@@ -15,8 +15,7 @@ class SetPythonLaunchScriptBlock(IWithPreparePythonBlock):
         workspace = Path(config.workspace)
         launch_cli = config.python_launch_cli
         launch_entry = config.python_launch_entry
-        launch_script = config.python_launch_script
-        if all(launch is None for launch in (launch_cli, launch_entry, launch_script)):
+        if all(launch is None for launch in (launch_cli, launch_entry)):
             return
         # windows launch
         if platform == Platform.WINDOWS:
@@ -43,19 +42,6 @@ title Run
 @echo off
 title Run
 {executable} {launch_entry} %*
-"""
-                    )
-            elif launch_script is not None:
-                launch_script = get_asset(launch_script)
-                launch_script.fetch(workspace)
-                launch_script_dst = launch_script.dst
-                rule(f"Generating '{bat_file}' to run '{launch_script_dst}'")
-                with bat_path.open("w") as f:
-                    f.write(
-                        f"""
-@echo off
-title Run
-{executable} {launch_script_dst}
 """
                     )
 

@@ -13,7 +13,6 @@
       }
     ],
     "python_launch_cli": "cfport/cli.py",
-    "python_launch_script": null,
     "external_blocks": null
   }
 }

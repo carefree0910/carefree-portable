@@ -117,7 +117,6 @@ class IConfig(ISerializableDataClass):
     huggingface_space_app_file: Optional[str] = None
     python_launch_cli: Optional[str] = None
     python_launch_entry: Optional[str] = None
-    python_launch_script: Optional[TAsset] = None
     external_blocks: Optional[List[str]] = None
 
     @classmethod
@@ -138,8 +137,6 @@ class IConfig(ISerializableDataClass):
         self.python_requirements = list(
             map(get_py_requirement, self.python_requirements)
         )
-        if self.python_launch_script is not None:
-            self.python_launch_script = get_asset(self.python_launch_script)
 
     def dump(self, path: str) -> None:
         with open(path, "w") as f:
