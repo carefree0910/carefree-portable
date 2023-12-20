@@ -293,8 +293,6 @@ class IConfig(ISerializableDataClass):
             json.dump(self.to_pack().asdict(), f, indent=2)
 
     def load(self, preset: str) -> None:
-        import cfport
-
         with DEFAULT_SETTINGS_PATH.open("r") as f:
             settings = json.load(f)
         if preset != "none":
@@ -303,6 +301,11 @@ class IConfig(ISerializableDataClass):
                 update_dict(json.load(f), settings)
         for k, v in settings.items():
             setattr(self, k, v)
+        self._handle_version()
+
+    def _handle_version(self) -> None:
+        import cfport
+
         if self.version is None:
             self.version = cfport.__version__
         elif self.version != cfport.__version__:
