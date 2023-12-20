@@ -1,0 +1,30 @@
+{
+  "type": "windows",
+  "info": {
+    "workspace": "playground_v2_cfport",
+    "allow_existing": true,
+    "assets": [
+      {
+        "git_url": "https://huggingface.co/spaces/playgroundai/playground-v2",
+        "flatten": true,
+        "dst": "./"
+      }
+    ],
+    "downloads": {
+      "python_embeddables": "3.10.11_64-bit"
+    },
+    "python_requirements": [
+      {
+        "install_command": "$pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121"
+      },
+      "accelerate==0.25.0",
+      "diffusers==0.24.0",
+      "transformers==4.36.2",
+      "gradio==4.10.0"
+    ],
+    "huggingface_space_app_file": "app.py",
+    "python_launch_cli": null,
+    "python_launch_entry": "app.py",
+    "external_blocks": null
+  }
+}
