@@ -32,7 +32,7 @@ class DownloadBlock(IExecuteBlock):
                 if isinstance(v_url, dict):
                     v_url = v_url.get(platform.value)
                 if v_url is None:
-                    log(f"[{platform}] cannot find url for '{v}' in '{k}', skippping")
+                    log(f"\[{platform}] cannot find url for '{v}' in '{k}', skippping")
                     continue
                 k_workspace.mkdir(exist_ok=True)
                 kv_downloaded = download(v_url, k_workspace)
