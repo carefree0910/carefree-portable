@@ -89,11 +89,18 @@ class PreparePythonBlock(IExecuteBlock):
                 with path.open("w") as f:
                     f.writelines(lines)
                 break
+        # linux / macos preparation
         else:
-            raise NotImplementedError(
-                "`PreparePythonBlock` is not yet implemented "
-                f"on the '{platform}' platform"
-            )
+            rule(f"Creating Python venv for {platform}")
+            self.root = workspace / "python_venv"
+            self.executable = self.root / "bin" / "python3"
+            if self.executable.is_file():
+                log("Python venv is already created")
+            else:
+                subprocess.run(
+                    ["python3", "-m", "venv", "--copies", str(self.root.absolute())],
+                    check=True,
+                )
         # install `pip`
         if subprocess.call(self.pip_cmd, stdout=subprocess.DEVNULL) == 0:
             log("`pip` is already installed")

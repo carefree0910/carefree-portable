@@ -62,9 +62,7 @@ def main() -> None:
 @main.command()
 @click.option(
     "--platform",
-    # this should be `auto` in the future
-    # but currently we only support windows
-    default="windows",
+    default="auto",
     show_default=True,
     type=click.Choice(["auto"] + [e.value for e in Platform]),
     help="The target platform.",
