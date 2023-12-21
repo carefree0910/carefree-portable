@@ -44,7 +44,7 @@ def download(
     if name is None:
         name = file.stem
     else:
-        file = file.with_stem(name)
+        file = file.with_name(f"{name}{file.suffix}")
     path = root / file
     is_zip = file.suffix == ".zip"
     is_tar = file.suffix in {".tar", ".tar.gz", ".tgz"}
