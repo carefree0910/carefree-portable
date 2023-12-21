@@ -42,6 +42,8 @@ def download(
     file = Path(url.split("/")[-1])
     if name is None:
         name = file.stem
+    else:
+        file = file.with_stem(name)
     path = root / file
     is_zip = file.suffix == ".zip"
     zip_folder_path = root / name
