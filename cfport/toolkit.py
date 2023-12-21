@@ -1,5 +1,6 @@
 import sys
 import shutil
+import tarfile
 import subprocess
 import urllib.request
 
@@ -37,7 +38,7 @@ def download(
     root: Path = Path.cwd(),
     name: Optional[str] = None,
     *,
-    remove_zip: bool = True,
+    remove_compressed: bool = True,
 ) -> Path:
     file = Path(url.split("/")[-1])
     if name is None:
@@ -46,11 +47,13 @@ def download(
         file = file.with_stem(name)
     path = root / file
     is_zip = file.suffix == ".zip"
-    zip_folder_path = root / name
-    if is_zip and zip_folder_path.is_dir():
-        log(f"'{zip_folder_path}' already exists, skipping")
-        return zip_folder_path
-    if not is_zip and path.is_file():
+    is_tar = file.suffix in {".tar", ".tar.gz", ".tgz"}
+    is_compressed = is_zip or is_tar
+    uncompressed_folder_path = root / name
+    if is_compressed and uncompressed_folder_path.is_dir():
+        log(f"'{uncompressed_folder_path}' already exists, skipping")
+        return uncompressed_folder_path
+    if not is_compressed and path.is_file():
         log(f"'{path}' already exists, skipping")
         return path
     with DownloadProgressBar(unit="B", unit_scale=True, miniters=1, desc=name) as t:
@@ -59,13 +62,29 @@ def download(
             filename=path,
             reporthook=t.update_to,
         )
-    if not is_zip:
+    if not is_compressed:
         return path
-    with ZipFile(path, "r") as zip_ref:
-        zip_ref.extractall(zip_folder_path)
-    if remove_zip:
+    if is_zip:
+        with ZipFile(path, "r") as zip_ref:
+            topmost_names = [name for name in zip_ref.namelist() if "/" not in name]
+            if topmost_names == [name]:
+                dst = root
+            else:
+                dst = uncompressed_folder_path
+            zip_ref.extractall(dst)
+    elif is_tar:
+        with tarfile.open(path) as tar_ref:
+            topmost_names = [name for name in tar_ref.getnames() if "/" not in name]
+            if topmost_names == [name]:
+                dst = root
+            else:
+                dst = uncompressed_folder_path
+            tar_ref.extractall(dst)
+    else:
+        raise RuntimeError(f"unknown compressed file type: {file.suffix}")
+    if remove_compressed:
         path.unlink()
-    return zip_folder_path
+    return uncompressed_folder_path
 
 
 def cp(src: Path, dst: Path) -> None:
