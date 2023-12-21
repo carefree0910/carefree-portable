@@ -80,6 +80,9 @@ class PreparePythonBlock(IExecuteBlock):
                     continue
                 with path.open("r") as f:
                     lines = f.readlines()
+                if not lines[-1].startswith("#"):
+                    log("Python Embeddable is already prepared")
+                    break
                 lines.insert(2, ".\Scripts\n")
                 lines.insert(3, ".\Lib\site-packages\n")
                 lines[-1] = lines[-1][1:]  # remove comment of 'import site'
