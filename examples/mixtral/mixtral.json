@@ -1,5 +1,5 @@
 {
-  "type": "windows",
+  "type": "auto",
   "info": {
     "workspace": "mixtral_cfport",
     "allow_existing": true,

@@ -1,5 +1,5 @@
 {
-  "type": "windows",
+  "type": "auto",
   "info": {
     "workspace": "carefree-portable",
     "allow_existing": true,

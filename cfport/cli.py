@@ -6,7 +6,6 @@ from cfport import console
 from pathlib import Path
 from cfport.config import load_config
 from cfport.console import log
-from cfport.toolkit import get_platform
 from cfport.toolkit import Platform
 from cfport.constants import PRESETS_SETTINGS_DIR
 
@@ -18,8 +17,6 @@ def run_config(
     target: str = cfport.DEFAULT_CONFIG_FILE,
 ) -> None:
     console.rule("Generating Config")
-    if platform == "auto":
-        platform = get_platform().value
     console.log(f"Target platform: {platform}")
     config: cfport.IConfig = cfport.IConfig.make(platform, {})
     config.load(preset)

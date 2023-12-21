@@ -1,5 +1,5 @@
 {
-  "type": "windows",
+  "type": "auto",
   "info": {
     "workspace": "playground_v2_cfport",
     "allow_existing": true,

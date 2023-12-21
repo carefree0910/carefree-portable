@@ -20,6 +20,7 @@ from .toolkit import cp
 from .toolkit import download
 from .toolkit import git_clone
 from .toolkit import hijack_cmds
+from .toolkit import get_platform
 from .toolkit import Platform
 from .constants import DEFAULT_WORKSPACE
 from .constants import PRESETS_SETTINGS_DIR
@@ -331,6 +332,13 @@ class MacOSConfig(IConfig):
     pass
 
 
+@IConfig.register("auto")
+class AutoConfig(IConfig):
+    @property
+    def platform(self) -> Platform:
+        return get_platform()
+
+
 def load_config(path: str) -> IConfig:
     with open(path, "r") as f:
         config = json.load(f)
@@ -342,5 +350,6 @@ __all__ = [
     "LinuxConfig",
     "WindowsConfig",
     "MacOSConfig",
+    "AutoConfig",
     "load_config",
 ]
