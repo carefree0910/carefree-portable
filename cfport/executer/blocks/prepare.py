@@ -58,11 +58,11 @@ class PreparePythonBlock(IExecuteBlock):
     def build(self, config: IConfig) -> None:
         platform = config.platform
         workspace = Path(config.workspace)
-        download_block = self.download_block
-        if download_block is None:
-            return
         # windows preparation
         if platform == Platform.WINDOWS:
+            download_block = self.download_block
+            if download_block is None:
+                return
             py_embeddable = download_block.downloaded.get("python_embeddables")
             if py_embeddable is None:
                 return
