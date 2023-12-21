@@ -7,12 +7,13 @@ from pathlib import Path
 from cfport.config import load_config
 from cfport.console import log
 from cfport.toolkit import Platform
+from cfport.constants import AUTO_KEY
 from cfport.constants import PRESETS_SETTINGS_DIR
 
 
 def run_config(
     *,
-    platform: str = "auto",
+    platform: str = AUTO_KEY,
     preset: str = "none",
     target: str = cfport.DEFAULT_CONFIG_FILE,
 ) -> None:
@@ -59,9 +60,9 @@ def main() -> None:
 @main.command()
 @click.option(
     "--platform",
-    default="auto",
+    default=AUTO_KEY,
     show_default=True,
-    type=click.Choice(["auto"] + [e.value for e in Platform]),
+    type=click.Choice([AUTO_KEY] + [e.value for e in Platform]),
     help="The target platform.",
 )
 @click.option(

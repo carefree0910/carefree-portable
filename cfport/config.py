@@ -22,6 +22,7 @@ from .toolkit import git_clone
 from .toolkit import hijack_cmds
 from .toolkit import get_platform
 from .toolkit import Platform
+from .constants import AUTO_KEY
 from .constants import DEFAULT_WORKSPACE
 from .constants import PRESETS_SETTINGS_DIR
 from .constants import DEFAULT_SETTINGS_PATH
@@ -332,7 +333,7 @@ class MacOSConfig(IConfig):
     pass
 
 
-@IConfig.register("auto")
+@IConfig.register(AUTO_KEY)
 class AutoConfig(IConfig):
     @property
     def platform(self) -> Platform:

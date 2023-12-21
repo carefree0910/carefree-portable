@@ -6,5 +6,6 @@ SETTINGS_DIR = ROOT / "settings"
 PRESETS_SETTINGS_DIR = SETTINGS_DIR / "presets"
 DEFAULT_SETTINGS_PATH = SETTINGS_DIR / "defaults.json"
 
+AUTO_KEY = "auto"
 DEFAULT_WORKSPACE = "cfport_package"
 DEFAULT_CONFIG_FILE = "cfport.json"
