@@ -88,6 +88,7 @@ class PreparePythonBlock(IExecuteBlock):
                 lines[-1] = lines[-1][1:]  # remove comment of 'import site'
                 with path.open("w") as f:
                     f.writelines(lines)
+                break
         else:
             raise NotImplementedError(
                 "`PreparePythonBlock` is not yet implemented "
