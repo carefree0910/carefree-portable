@@ -2,6 +2,7 @@ import subprocess
 
 from cfport import *
 from pathlib import Path
+from cfport.console import ask
 from cfport.toolkit import git_clone
 from cfport.toolkit import hijack_file
 from cfport.toolkit import Platform
@@ -45,10 +46,32 @@ class WebUIBlock(IExecuteBlock):
             hijack_file(repo_dir / "webui.bat", hijack_venv_command)
             # run installation / launch bat
             subprocess.run([webui_user_bat], cwd=repo_dir, shell=True, check=True)
-        # linux / macos preparation
-        else:
+        # linux
+        elif platform == Platform.LINUX:
+            if (
+                ask("Do you want to install the dependencies?", ["y", "n"], default="n")
+                == "y"
+            ):
+                dist = ask(
+                    "Which distribution?",
+                    ["debian", "red-hat", "open-suse", "arch"],
+                    default="debian",
+                )
+                if dist == "red-hat":
+                    cmd = "sudo dnf install wget git gperftools-libs libglvnd-glx"
+                elif dist == "open-suse":
+                    cmd = "sudo zypper install wget git libtcmalloc4 libglvnd"
+                elif dist == "arch":
+                    cmd = "sudo pacman -S wget git"
+                else:
+                    cmd = "sudo apt install wget git python3 python3-venv libgl1 libglib2.0-0"
+                if ask(f"Run '{cmd}'?", ["y", "n"], default="y") == "y":
+                    subprocess.run(cmd, shell=True, check=True)
             command = f"""export python_cmd="{executable}" && bash webui.sh"""
             subprocess.run(command, cwd=repo_dir, shell=True, check=True)
+        else:
+            msg = f"`WebUIBlock` is not implemented for platform '{platform}'"
+            raise NotImplementedError(msg)
 
 
 if __name__ == "__main__":
