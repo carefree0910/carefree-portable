@@ -56,23 +56,22 @@ class PreparePythonBlock(IExecuteBlock):
         return [str(self.executable), "-m", "pip"]
 
     def build(self, config: IConfig) -> None:
-        key = "python_embeddables"
         platform = config.platform
         workspace = Path(config.workspace)
+        download_block = self.download_block
+        if download_block is None:
+            return
         # windows preparation
         if platform == Platform.WINDOWS:
-            download_block = self.download_block
-            if download_block is None:
+            py_embeddable = download_block.downloaded.get("python_embeddables")
+            if py_embeddable is None:
                 return
-            python_downloads = download_block.downloaded.get(key)
-            if python_downloads is None:
-                return
-            if len(python_downloads) != 1:
-                raise ValueError(
+            if len(py_embeddable) != 1:
+                raise RuntimeError(
                     "expected download 1 and only 1 python embeddable, "
-                    f"but got {len(python_downloads)}"
+                    f"but got {len(py_embeddable)}"
                 )
-            self.root = list(python_downloads.values())[0]
+            self.root = list(py_embeddable.values())[0]
             self.executable = self.root / "python"
             rule("Preparing Python Embeddable for Windows")
             # modify `_pth` file
