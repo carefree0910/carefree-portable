@@ -40,6 +40,34 @@ class SetPythonLaunchScriptBlock(IWithPreparePythonBlock):
 {executable} {launch_entry} %*
 """
                     )
+        # linux / macos launch
+        else:
+            sh_file = "run.sh"
+            sh_path = workspace / sh_file
+            common_header = f"""#!/bin/bash
+source {self.prepare_python.root.relative_to(workspace) / "bin" / "activate"}
+which python
+"""
+            if launch_cli is not None:
+                rule(f"Generating '{sh_file}' to run '{launch_cli}' in site-packages")
+                lib_dir = self.prepare_python.root / "lib"
+                py_dir = next(lib_dir.iterdir())
+                cli = py_dir / "site-packages" / launch_cli
+                cli = str(cli.relative_to(workspace))  # type: ignore
+                with sh_path.open("w") as f:
+                    f.write(
+                        f"""{common_header}
+python {cli} "$@"
+"""
+                    )
+            elif launch_entry is not None:
+                rule(f"Generating '{sh_file}' to run '{launch_entry}'")
+                with sh_path.open("w") as f:
+                    f.write(
+                        f"""{common_header}
+python {launch_entry} "$@"
+"""
+                    )
 
 
 __all__ = [
