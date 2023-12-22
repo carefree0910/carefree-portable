@@ -21,15 +21,14 @@ class SetPythonLaunchScriptBlock(IWithPreparePythonBlock):
             bat_file = "run.bat"
             bat_path = workspace / bat_file
             executable = str(self.prepare_python.executable.relative_to(workspace))
+            common_header = f"@echo off\ntitle Run\n"
             if launch_cli is not None:
                 rule(f"Generating '{bat_file}' to run '{launch_cli}' in site-packages")
                 cli = self.prepare_python.root / "Lib" / "site-packages" / launch_cli
                 cli = str(cli.relative_to(workspace))  # type: ignore
                 with bat_path.open("w") as f:
                     f.write(
-                        f"""
-@echo off
-title Run
+                        f"""{common_header}
 {executable} {cli} %*
 """
                     )
@@ -37,9 +36,7 @@ title Run
                 rule(f"Generating '{bat_file}' to run '{launch_entry}'")
                 with bat_path.open("w") as f:
                     f.write(
-                        f"""
-@echo off
-title Run
+                        f"""{common_header}
 {executable} {launch_entry} %*
 """
                     )
