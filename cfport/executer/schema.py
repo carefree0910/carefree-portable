@@ -1,8 +1,11 @@
 from cftool.pipeline import IBlock
 
+from ..config import IConfig
+
 
 class IExecuteBlock(IBlock):
-    pass
+    def cleanup(self, config: IConfig) -> None:
+        pass
 
 
 __all__ = [

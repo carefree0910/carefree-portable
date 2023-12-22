@@ -22,6 +22,7 @@ def get_default_blocks() -> List[IExecuteBlock]:
 @IPipeline.register("executer")
 class Executer(IPipeline):
     config: IConfig
+    blocks: List[IExecuteBlock]
 
     @classmethod
     def init(cls: Type["Executer"], config: IConfig) -> "Executer":
@@ -46,4 +47,6 @@ class Executer(IPipeline):
                     for external_block in self.config.external_blocks
                 ]
             )
-        return self.build(*blocks)
+        self.build(*blocks)
+        for block in self.blocks:
+            block.cleanup(self.config)
