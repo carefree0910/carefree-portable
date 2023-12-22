@@ -131,6 +131,22 @@ class PreparePythonBlock(IExecuteBlock):
             ## remove temp dir
             shutil.rmtree(temp_dir)
 
+    def cleanup(self, config: IConfig) -> None:
+        platform = config.platform
+        # modify shebangs in scripts
+        if platform != Platform.WINDOWS:
+            bin_dir = self.root / "bin"
+            log("Modifying shebangs in scripts")
+            for path in bin_dir.iterdir():
+                if not path.is_file() or path.name.startswith("python"):
+                    continue
+                with path.open("r") as file:
+                    lines = file.readlines()
+                if lines and lines[0].startswith("#!"):
+                    lines[0] = "#!/usr/bin/env python\n"
+                    with path.open("w") as file:
+                        file.writelines(lines)
+
 
 class IWithPreparePythonBlock(IExecuteBlock):
     @property
