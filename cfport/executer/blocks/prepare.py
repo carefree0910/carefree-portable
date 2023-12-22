@@ -1,3 +1,4 @@
+import re
 import shutil
 import subprocess
 
@@ -101,6 +102,21 @@ class PreparePythonBlock(IExecuteBlock):
                     ["python3", "-m", "venv", "--copies", str(self.root.absolute())],
                     check=True,
                 )
+            bin_dir = self.root / "bin"
+            # modify activation scripts
+            log("Modifying activation scripts")
+            for path in bin_dir.iterdir():
+                if path.name.startswith("activate"):
+                    with path.open("r") as f:
+                        content = f.read()
+                    # replace VIRTUAL_ENV with dynamic path
+                    content = re.sub(
+                        r"VIRTUAL_ENV=[\"\'].*?[\"\']",
+                        "VIRTUAL_ENV=$(cd $(dirname $(dirname ${BASH_SOURCE[0]})) && pwd)",
+                        content,
+                    )
+                    with path.open("w") as f:
+                        f.write(content)
         # install `pip`
         if subprocess.call(self.pip_cmd, stdout=subprocess.DEVNULL) == 0:
             log("`pip` is already installed")
