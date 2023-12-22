@@ -2,8 +2,6 @@
 
 This is an example of using `carefree-portable` 📦️ to package the brilliant [Playground v2 HuggingFace Space](https://huggingface.co/spaces/playgroundai/playground-v2).
 
-> Currently this example only works on Windows.
-
 
 ## Target
 
