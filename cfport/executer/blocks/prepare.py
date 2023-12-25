@@ -5,13 +5,13 @@ import subprocess
 from typing import List
 from typing import Optional
 from pathlib import Path
+from cftool.console import ask
+from cftool.console import log
+from cftool.console import rule
 
 from .download import DownloadBlock
 from ..schema import IExecuteBlock
 from ...config import IConfig
-from ...console import ask
-from ...console import log
-from ...console import rule
 from ...toolkit import download
 from ...toolkit import Platform
 

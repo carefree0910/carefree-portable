@@ -2,7 +2,7 @@ import subprocess
 
 from cfport import *
 from pathlib import Path
-from cfport.console import ask
+from cftool.console import ask
 from cfport.toolkit import git_clone
 from cfport.toolkit import hijack_file
 from cfport.toolkit import Platform

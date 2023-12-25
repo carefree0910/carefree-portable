@@ -1,8 +1,8 @@
 from pathlib import Path
+from cftool.console import log
 
 from ..schema import IExecuteBlock
 from ...config import IConfig
-from ...console import log
 from ...toolkit import hijack_file
 
 

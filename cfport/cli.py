@@ -2,10 +2,9 @@ import json
 import click
 import cfport
 
-from cfport import console
+from cftool import console
 from pathlib import Path
 from cfport.config import load_config
-from cfport.console import log
 from cfport.toolkit import Platform
 from cfport.constants import AUTO_KEY
 from cfport.constants import PRESETS_SETTINGS_DIR
@@ -40,7 +39,7 @@ def run_package(*, file: str) -> None:
     with (Path(workspace) / "executer.json").open("w") as f:
         json.dump(executer.to_pack().asdict(), f, indent=2)
     console.rule("Congratulations")
-    log("Your portable project is ready!")
+    console.log("Your portable project is ready!")
 
 
 def run_execute(*, file: str) -> None:
@@ -49,7 +48,7 @@ def run_execute(*, file: str) -> None:
     with open(file, "r") as f:
         cfport.Executer.from_pack(json.load(f))
     console.rule("Congratulations")
-    log("Your portable project is ready!")
+    console.log("Your portable project is ready!")
 
 
 @click.group()

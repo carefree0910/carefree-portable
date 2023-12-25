@@ -1,9 +1,9 @@
 from pathlib import Path
+from cftool.console import rule
 
 from .prepare import IWithPreparePythonBlock
 from ..schema import IExecuteBlock
 from ...config import IConfig
-from ...console import rule
 from ...toolkit import Platform
 
 

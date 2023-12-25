@@ -11,8 +11,7 @@ from typing import Optional
 from pathlib import Path
 from zipfile import ZipFile
 from cftool.misc import DownloadProgressBar
-
-from .console import log
+from cftool.console import log
 
 
 class Platform(str, Enum):

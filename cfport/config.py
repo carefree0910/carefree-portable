@@ -13,9 +13,9 @@ from dataclasses import field
 from dataclasses import dataclass
 from cftool.misc import update_dict
 from cftool.misc import ISerializableDataClass
+from cftool.console import log
+from cftool.console import rule
 
-from .console import log
-from .console import rule
 from .toolkit import cp
 from .toolkit import download
 from .toolkit import git_clone

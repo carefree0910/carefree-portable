@@ -1,10 +1,10 @@
 from pathlib import Path
+from cftool.console import log
+from cftool.console import rule
 
 from ..schema import IExecuteBlock
 from ...config import get_asset
 from ...config import IConfig
-from ...console import log
-from ...console import rule
 
 
 @IExecuteBlock.register("fetch_assets")

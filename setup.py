@@ -14,9 +14,8 @@ setup(
     include_package_data=True,
     entry_points={"console_scripts": ["cfport = cfport.cli:main"]},
     install_requires=[
-        "rich",
         "click>=8.1.3",
-        "carefree-toolkit>=0.3.9",
+        "carefree-toolkit>=0.3.10",
     ],
     author="carefree0910",
     author_email="syameimaru.saki@gmail.com",
